@@ -1,13 +1,21 @@
 <template>
-  <div id="app">
-    <v-btn>ff</v-btn>
-  </div>
+	<div id="app" class="app">
+		<Form/>
+	</div>
 </template>
 
 <script>
 
+import Form from '@/components/form'
 export default {
-  name: 'App',
+	name: 'App',
+	components: {
+		Form
+	},
+	data: function () {
+		return {
+		}
+	}
 }
 </script>
 

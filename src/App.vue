@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <v-btn>ff</v-btn>
   </div>
 </template>
 

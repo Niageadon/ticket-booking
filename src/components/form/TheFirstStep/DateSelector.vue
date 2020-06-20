@@ -1,58 +1,62 @@
 <template>
-	<v-row>
-		<v-col cols="12" lg="6">
-			<v-menu
-				ref="menu1"
-				v-model="menu1"
-				:close-on-content-click="false"
-				transition="scale-transition"
-				offset-y
-				max-width="290px"
-				min-width="290px"
+	<v-col cols="12" lg="6">
+		<v-menu
+			ref="showMenu"
+			v-model="showMenu"
+			:close-on-content-click="false"
+			transition="scale-transition"
+			offset-y
+			max-width="290px"
+			min-width="290px"
+		>
+			<template v-slot:activator="{ on, attrs }">
+				<v-text-field
+					v-on="on"
+					v-bind="attrs"
+					:rules="dateRules"
+					hint="MM/DD/YYYY format"
+					v-model="date" label="Выберите даты проживания" prepend-icon="event"></v-text-field>
+			</template>
+
+			<v-date-picker
+				v-model="date"
+				@input="menu1 = false"
+				range
+				hint="MM/DD/YYYY format"
 			>
-				<template v-slot:activator="{ on, attrs }">
-					<v-text-field
-						v-model="dateFormatted"
-						label="Date"
-						hint="MM/DD/YYYY format"
-						persistent-hint
-						prepend-icon="event"
-						v-bind="attrs"
-						@blur="date = parseDate(dateFormatted)"
-						v-on="on"
-					></v-text-field>
-				</template>
-				<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-			</v-menu>
-			<p>Date in ISO format: <strong>{{ date }}</strong></p>
-		</v-col>
-	</v-row>
+			</v-date-picker>
+		</v-menu>
+	</v-col>
 </template>
 
 <script>
 export default {
-	name: 'form-first-step',
-	data: vm => ({
-		date: new Date().toISOString().substr(0, 10),
-		dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-		menu1: false,
-	}),
-	methods: {
-		formatDate (date) {
-			if (!date) return null
-
-			const [year, month, day] = date.split('-')
-			return `${month}/${day}/${year}`
-		},
-		parseDate (date) {
-			if (!date) return null
-
-			const [month, day, year] = date.split('/')
-			return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-		},
+	name: 'first-step-date',
+	model: {
+		prop: 'value',
+		event: 'change'
 	},
-	computed: {
-	}
+	props: {
+		label: { type: String, required: true },
+		value: { type: [Object, null], required: true },
+	},
+	data: function() {
+		return {
+			date: [],
+			dateFormatted: '',
+			showMenu: false,
+			dateRules: [v => v?.length === 2 || 'Выберите начальную и конечную даты'],
+
+		}
+	},
+	watch: {
+		date(v) {
+			if(v) {
+				const [to, from] = v;
+				this.$emit('change', {to, from})
+			}
+		}
+	},
 }
 </script>
 

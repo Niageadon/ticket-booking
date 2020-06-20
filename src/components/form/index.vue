@@ -1,7 +1,7 @@
 <template>
 	<v-layout wrap class="form xs12 pa-4 justify-center">
 		<v-card class="xs12 pa-2">
-			<TheFirstStep/>
+			<TheFirstStep v-model="firstStep"/>
 		</v-card>
 	</v-layout>
 </template>
@@ -17,6 +17,9 @@ export default {
 	},
 	data: function () {
 		return {
+			firstStep: {
+
+			}
 		}
 	}
 }

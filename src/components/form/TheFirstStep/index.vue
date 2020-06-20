@@ -55,7 +55,11 @@
 				></v-select>
 			</v-row>
 
-			<DateSelector/>
+			<DateSelector label="Дата заезда" v-model="date"/>
+
+			<v-row>
+				<span>Цена:</span>
+			</v-row>
 		</v-form>
 	</div>
 </template>
@@ -66,21 +70,29 @@ import DateSelector from './DateSelector'
 import prices from '@/assets/prices.json'
 export default {
 	name: 'form-first-step',
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
+	props: {
+		form: { type: Object }
+	},
 	components: {
 		DateSelector
 	},
 	data: function () {
 		return {
 			adultsAmount: 0,
-
 			childrenAmount: {
 				'under-5': 0,
 				'under-12': 0,
 				'over-12': 0,
 			},
 			roomType: '',
-			dateFrom: '',
-			dateTo: '',
+			date: {
+				from: null,
+				to: null
+			},
 			// form rules
 			adultRules: [v => ((v * 3) >= this.childrenCount) || 'Не более 3 детей до 12 на взрослого'],
 			childrenRules: [v => (v / 3 <= this.adultsAmount) || 'Не более 3 детей до 12 на взрослого']
@@ -93,16 +105,31 @@ export default {
 				return sum + parseFloat(this.childrenAmount[key])
 			}, 0)
 		},
-
 		isFormValid() {
 			switch (true) {
 				case this.adultsAmount * 3 < this.childrenCount: return false;
-
+				case !this.roomType: return false;
+				case !(this.date?.to && this.date?.from): return false;
 			}
 			return true
 		},
 		price() {
+			const calcDatePeriod = () => {
+
+			}
 			return prices
+
+
+		}
+	},
+	watch: {
+		isFormValid(to) {
+			to && this.$emit('change', {
+				adultsAmount: this.adultsAmount,
+				childrenAmount: this.childrenAmount,
+				roomType: this.roomType,
+				date: this.date,
+			})
 		}
 	}
 }

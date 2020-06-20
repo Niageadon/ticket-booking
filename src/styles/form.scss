@@ -1,5 +1,7 @@
 .form {
-    background-color: red;
-    width: 70%;
-
+    min-width: 320px;
+    //width: 70%;
+    &_number-input {
+        max-width: 80px;
+    }
 }

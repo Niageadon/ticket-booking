@@ -1,7 +1,7 @@
 <template>
-	<div id="app" class="app">
+	<v-app id="app" class="app">
 		<Form/>
-	</div>
+	</v-app>
 </template>
 
 <script>

@@ -1,22 +1,22 @@
 <template>
-	<v-card class="form">
-		<v-form>
-			<v-select
-				:items="items"
-				filled
-				label="Filled style"
-			></v-select>
-		</v-form>
-	</v-card>
+	<v-layout wrap class="form xs12 pa-4 justify-center">
+		<v-card class="xs12 pa-2">
+			<TheFirstStep/>
+		</v-card>
+	</v-layout>
 </template>
 
 <script>
 
+import TheFirstStep from './TheFirstStep/index'
+
 export default {
-	name: 'App',
+	name: 'calculate-form',
+	components: {
+		TheFirstStep
+	},
 	data: function () {
 		return {
-			items: ['boba', '2']
 		}
 	}
 }

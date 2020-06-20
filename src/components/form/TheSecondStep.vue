@@ -6,13 +6,13 @@
 
 <script>
 
-	export default {
-		name: 'App',
-		data: function () {
-			return {
-			}
+export default {
+	name: 'form-second-step',
+	data: function () {
+		return {
 		}
 	}
+}
 </script>
 
 <style>

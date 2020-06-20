@@ -2,7 +2,7 @@
 	<div class="xs12">
 		<v-form>
 			<span class="ml-4">Количество гостей</span>
-			<v-row class="xs12 mx-2 mb-4">
+			<v-row class="xs12 mx-2 mb-4 justify-center">
 				<v-text-field
 					v-model="adultsAmount"
 					required
@@ -53,10 +53,9 @@
 					class="ma-3"
 				></v-select>
 			</v-row>
-
 			<DateSelector label="Дата заезда" v-model="date"/>
 
-			<v-row class="ma-3">
+			<v-row v-show="price" class="ma-3">
 				<span>Цена: {{price}}</span>
 			</v-row>
 		</v-form>
@@ -168,8 +167,8 @@ export default {
 		}
 	},
 	watch: {
-		isFormValid(to) {
-			to && this.$emit('change', {
+		isFormValid() {
+			this.$emit('change', {
 				adultsAmount: this.adultsAmount,
 				childrenAmount: this.childrenAmount,
 				roomType: this.roomType,

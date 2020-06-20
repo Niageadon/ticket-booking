@@ -1,7 +1,7 @@
 <template>
 	<v-layout wrap class="form xs12 pa-4 justify-center">
 		<v-card class="xs12 pa-2">
-			<TheFirstStep v-if="isFirstStepActive" v-model="firstStep"/>
+			<TheFirstStep v-if="!isFirstStepActive" v-model="firstStep"/>
 			<TheSecondStep v-else/>
 
 			<v-row class="justify-center">

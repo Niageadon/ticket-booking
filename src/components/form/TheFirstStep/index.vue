@@ -33,7 +33,6 @@
 				<v-text-field
 					v-model="childrenAmount['under-5']"
 					:rules="childrenRules"
-					hide-details
 					label="Дети до 5"
 					placeholder="Введите к-во"
 					type="number"
@@ -95,7 +94,7 @@ export default {
 			},
 			// form rules
 			adultRules: [v => ((v * 3) >= this.childrenCount) || 'Не более 3 детей до 12 на взрослого'],
-			childrenRules: [v => (v / 3 <= this.adultsAmount) || 'Не более 3 детей до 12 на взрослого']
+			childrenRules: [() => (this.childrenCount / 3 <= this.adultsAmount) || 'Не более 3 детей до 12 на взрослого']
 		}
 	},
 	computed: {
@@ -107,6 +106,11 @@ export default {
 				case !(this.date?.to && this.date?.from): return false;
 			}
 			return true
+		},
+		childrenCount() {
+			return Object.keys(this.childrenAmount).reduce((sum, key) => {
+				return sum + parseFloat(this.childrenAmount[key])
+			}, 0)
 		},
 		price() {
 			if(!this.isFormValid) return null

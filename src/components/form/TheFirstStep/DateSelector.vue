@@ -16,7 +16,7 @@
 						label="Date"
 						hint="MM/DD/YYYY format"
 						persistent-hint
-						prepend-icon="mdi-event"
+						prepend-icon="event"
 						v-bind="attrs"
 						@blur="date = parseDate(dateFormatted)"
 						v-on="on"

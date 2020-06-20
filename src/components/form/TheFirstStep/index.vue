@@ -1,8 +1,8 @@
 <template>
 	<div class="xs12">
 		<v-form>
-			<span>Количество гостей</span>
-			<v-row class="xs12 mb-4">
+			<span class="ml-4">Количество гостей</span>
+			<v-row class="xs12 mx-2 mb-4">
 				<v-text-field
 					v-model="adultsAmount"
 					required
@@ -42,14 +42,14 @@
 				/>
 			</v-row>
 
-			<span>Тип номера</span>
-			<v-row>
+			<span class="ml-4">Тип номера</span>
+			<v-row class="mx-2">
 				<v-select
 					:items="roomTypes"
 					item-text="label"
 					item-value="value"
 					v-model="roomType"
-					label="Solo field"
+					label="Выберите тип номера"
 					solo
 					class="ma-3"
 				></v-select>
@@ -57,8 +57,8 @@
 
 			<DateSelector label="Дата заезда" v-model="date"/>
 
-			<v-row>
-				<span>Цена:</span>
+			<v-row class="ma-3">
+				<span>Цена: {{price}}</span>
 			</v-row>
 		</v-form>
 	</div>
@@ -82,7 +82,7 @@ export default {
 	},
 	data: function () {
 		return {
-			adultsAmount: 0,
+			adultsAmount: 1,
 			childrenAmount: {
 				'under-5': 0,
 				'under-12': 0,
@@ -100,11 +100,6 @@ export default {
 	},
 	computed: {
 		roomTypes: () => roomTypes,
-		childrenCount() {
-			return Object.keys(this.childrenAmount).reduce((sum, key) => {
-				return sum + parseFloat(this.childrenAmount[key])
-			}, 0)
-		},
 		isFormValid() {
 			switch (true) {
 				case this.adultsAmount * 3 < this.childrenCount: return false;
@@ -114,12 +109,58 @@ export default {
 			return true
 		},
 		price() {
-			const calcDatePeriod = () => {
+			if(!this.isFormValid) return null
 
+			const getDatesRange = (startDate, endDate) => {
+				let dateArray = [];
+				let start = this.$moment(startDate);
+
+				while (start <= this.$moment(endDate)) {
+					dateArray.push( this.$moment(start).format('YYYY-MM-DD') )
+					start = this.$moment(start).add(1, 'days');
+				}
+				return dateArray;
 			}
-			return prices
+			const findPeriod = (d) => {
+				const key = Object.keys(prices).find((el) => {
+					const date = this.$moment(d);
+					const year = date.year();
 
+					const period = prices[el];
+					/*console.group(date)
+					console.log(date.isBetween(
+						//this.$moment(`${period?.date_from}.${year}`),
+						//this.$moment(`${period?.date_to}.${year}`)
+						convertDateFormat(period?.date_from, year),
+						convertDateFormat(period?.date_to, year),
+					))
+					console.log(convertDateFormat(period?.date_from, year))
+					console.log(convertDateFormat(period?.date_to, year))
+					console.groupEnd()*/
+					return date.isBetween(
+						//this.$moment(`${period?.date_from}.${year}`),
+						//this.$moment(`${period?.date_to}.${year}`)
+						convertDateFormat(period?.date_from, year),
+						convertDateFormat(period?.date_to, year),
+					)
+				})
+				return prices[key]
 
+				function convertDateFormat(ddmm, yyyy) {
+					return yyyy + '-' + ddmm.split('.').reverse().join('-')
+				}
+			}
+
+			const datesRange = getDatesRange(this.date.from, this.date.to);
+			const total = datesRange.reduce((acc, date) => {
+				const periodInfo = findPeriod(date);
+				const price = parseFloat(periodInfo?.[this.roomType]);
+				const childDiscount = periodInfo?.child_discount_perc;
+				const childPrice = (this.childrenAmount['under-12'] / childDiscount) * price;
+				const adultsPrice = (this.adultsAmount + this.childrenAmount['over-12']) * price;
+				return parseFloat(acc + childPrice + adultsPrice)
+			}, 0)
+			return Math.ceil(total);
 		}
 	},
 	watch: {
@@ -129,8 +170,13 @@ export default {
 				childrenAmount: this.childrenAmount,
 				roomType: this.roomType,
 				date: this.date,
+				price: this.price
 			})
 		}
+	},
+	mounted() {
+		const a = this.$moment('2020-06-03')
+		console.log(a.isBetween('2020-05-15', '2020-10-25'))
 	}
 }
 </script>

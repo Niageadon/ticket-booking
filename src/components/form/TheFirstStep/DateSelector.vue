@@ -1,5 +1,5 @@
 <template>
-	<v-col cols="12" lg="6">
+	<v-col>
 		<v-menu
 			ref="showMenu"
 			v-model="showMenu"
@@ -14,7 +14,7 @@
 					v-on="on"
 					v-bind="attrs"
 					:rules="dateRules"
-					hint="MM/DD/YYYY format"
+					hint="YYY/MM/DD format"
 					v-model="date" label="Выберите даты проживания" prepend-icon="event"></v-text-field>
 			</template>
 
@@ -23,6 +23,7 @@
 				@input="menu1 = false"
 				range
 				hint="MM/DD/YYYY format"
+				:allowed-dates="allowedDates"
 			>
 			</v-date-picker>
 		</v-menu>
@@ -45,18 +46,31 @@ export default {
 			date: [],
 			dateFormatted: '',
 			showMenu: false,
+			// rules
 			dateRules: [v => v?.length === 2 || 'Выберите начальную и конечную даты'],
-
 		}
 	},
 	watch: {
 		date(v) {
-			if(v) {
-				const [to, from] = v;
-				this.$emit('change', {to, from})
+			if(v?.length === 2) {
+				const dates = [...v];
+				dates.sort((a, b) => +a - b);
+				this.$emit('change', {
+					to: this.$moment(dates[1]).format('YYYY-MM-DD'),
+					from: this.$moment(dates[0]).format('YYYY-MM-DD')
+				})
 			}
 		}
 	},
+	methods: {
+		allowedDates(val) {
+			const period = ['2020-05-15', '2020-09-16'];
+			return this.$moment(val).isBetween(...period)
+		}
+	},
+	computed: {
+
+	}
 }
 </script>
 

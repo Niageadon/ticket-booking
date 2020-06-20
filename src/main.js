@@ -5,6 +5,7 @@ import '@/styles/index.scss'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.config.productionTip = false
+Vue.use(require('vue-moment'));
 
 new Vue({
   vuetify,

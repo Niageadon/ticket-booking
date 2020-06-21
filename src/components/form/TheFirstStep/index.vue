@@ -52,8 +52,7 @@
 					label="Выберите тип номера"
 					solo
 					class="ma-3"
-				></v-select>
-
+				/>
 			</v-row>
 			<DateSelector label="Дата заезда" v-model="date"/>
 		</v-form>
@@ -78,7 +77,7 @@ export default {
 	},
 	data: function () {
 		return {
-			adultsAmount: 1,
+			adultsAmount: 0,
 			childrenAmount: {
 				'under-5': 0,
 				'under-12': 0,
@@ -145,11 +144,12 @@ export default {
 
 			const datesRange = getDatesRange(this.date.from, this.date.to);
 			const total = datesRange.reduce((acc, date) => {
+				console.log(acc)
 				const periodInfo = findPeriod(date);
 				const price = parseFloat(periodInfo?.[this.roomType]);
 				const childDiscount = periodInfo?.child_discount_perc;
 				const childPrice = (this.childrenAmount['under-12'] / childDiscount) * price;
-				const adultsPrice = (this.adultsAmount + this.childrenAmount['over-12']) * price;
+				const adultsPrice = (+ this.adultsAmount + this.childrenAmount['over-12']) * price;
 				return parseFloat(acc + childPrice + adultsPrice)
 			}, 0)
 			return Math.ceil(total);
@@ -168,16 +168,8 @@ export default {
 		}
 	},
 	watch: {
-		adultsAmount() { this.handleFormChange() },
 		childrenAmount() { this.handleFormChange() },
-		roomType() { this.handleFormChange() },
-		date() { this.handleFormChange() },
 		price() { this.handleFormChange() },
 	},
-	mounted() {
-	}
 }
 </script>
-
-<style>
-</style>

@@ -58,7 +58,7 @@ export default {
 		async submit() {
 			try {
 				const response = await fetch('js-api/vouchers', {
-					method: 'POST', // или 'PUT'
+					method: 'POST',
 					body: JSON.stringify({...this.firstStep, ...this.secondStep}), // данные могут быть 'строкой' или {объектом}!
 					headers: {
 						'Content-Type': 'application/json'

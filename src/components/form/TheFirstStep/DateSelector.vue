@@ -66,11 +66,5 @@ export default {
 			return this.$moment(val).isBetween(...period)
 		}
 	},
-	computed: {
-
-	}
 }
 </script>
-
-<style>
-</style>

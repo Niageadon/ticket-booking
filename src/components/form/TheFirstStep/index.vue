@@ -1,8 +1,8 @@
 <template>
 	<div class="xs12">
 		<v-form>
-			<span class="ml-4">Количество гостей</span>
-			<v-row class="xs12 mx-2 mb-4 justify-center">
+			<span class="">Количество гостей</span>
+			<v-row class="xs12 mb-4 justify-center">
 				<v-text-field
 					v-model="adultsAmount"
 					required
@@ -41,8 +41,9 @@
 				/>
 			</v-row>
 
-			<span class="ml-4">Тип номера</span>
-			<v-row class="mx-2">
+			<span>Тип номера</span>
+
+			<v-row>
 				<v-select
 					:items="roomTypes"
 					item-text="label"
@@ -52,12 +53,9 @@
 					solo
 					class="ma-3"
 				></v-select>
+
 			</v-row>
 			<DateSelector label="Дата заезда" v-model="date"/>
-
-			<v-row v-show="price" class="ma-3">
-				<span>Цена: {{price}}</span>
-			</v-row>
 		</v-form>
 	</div>
 </template>

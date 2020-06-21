@@ -1,33 +1,31 @@
 <template>
-	<v-col>
-		<v-menu
-			ref="showMenu"
-			v-model="showMenu"
-			:close-on-content-click="false"
-			transition="scale-transition"
-			offset-y
-			max-width="290px"
-			min-width="290px"
-		>
-			<template v-slot:activator="{ on, attrs }">
-				<v-text-field
-					v-on="on"
-					v-bind="attrs"
-					:rules="dateRules"
-					hint="YYY/MM/DD format"
-					v-model="date" label="Выберите даты проживания" prepend-icon="event"></v-text-field>
-			</template>
+	<v-menu
+		ref="showMenu"
+		v-model="showMenu"
+		:close-on-content-click="false"
+		transition="scale-transition"
+		offset-y
+		max-width="290px"
+		min-width="290px"
+	>
+		<template v-slot:activator="{ on, attrs }">
+			<v-text-field
+				v-on="on"
+				v-bind="attrs"
+				:rules="dateRules"
+				hint="YYY/MM/DD format"
+				v-model="date" label="Выберите даты проживания" prepend-icon="event"></v-text-field>
+		</template>
 
-			<v-date-picker
-				v-model="date"
-				@input="menu1 = false"
-				range
-				hint="MM/DD/YYYY format"
-				:allowed-dates="allowedDates"
-			>
-			</v-date-picker>
-		</v-menu>
-	</v-col>
+		<v-date-picker
+			v-model="date"
+			@input="menu1 = false"
+			range
+			hint="MM/DD/YYYY format"
+			:allowed-dates="allowedDates"
+		>
+		</v-date-picker>
+	</v-menu>
 </template>
 
 <script>

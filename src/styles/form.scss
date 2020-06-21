@@ -1,5 +1,8 @@
 .form {
     min-width: 320px;
+    height: 100%;
+    max-width: 450px;
+    padding: 16px;
     //width: 70%;
     &_number-input {
         max-width: 80px;

@@ -92,8 +92,8 @@ export default {
 				to: null
 			},
 			// form rules
-			adultRules: [v => ((v * 3) >= this.childrenCount) || 'Не более 3 детей до 12 на взрослого'],
-			childrenRules: [() => (this.childrenCount / 3 <= this.adultsAmount) || 'Не более 3 детей до 12 на взрослого']
+			adultRules: [v => ((v * 3) >= this.smallChildrenAmount) || 'Не более 3 детей до 12 на взрослого'],
+			childrenRules: [() => (this.smallChildrenAmount / 3 <= this.adultsAmount) || 'Не более 3 детей до 12 на взрослого']
 		}
 	},
 	computed: {
@@ -106,10 +106,13 @@ export default {
 			}
 			return true
 		},
-		childrenCount() {
+		allChildren() {
 			return Object.keys(this.childrenAmount).reduce((sum, key) => {
 				return sum + parseFloat(this.childrenAmount[key])
 			}, 0)
+		},
+		smallChildrenAmount() {
+			return this.allChildren - this.childrenAmount['over-12'];
 		},
 		price() {
 			if(!this.isFormValid) return null

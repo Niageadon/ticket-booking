@@ -100,7 +100,7 @@ export default {
 		roomTypes: () => roomTypes,
 		isFormValid() {
 			switch (true) {
-				case this.adultsAmount * 3 < this.childrenCount: return false;
+				case this.adultsAmount * 3 < this.smallChildrenAmount: return false;
 				case !this.roomType: return false;
 				case !(this.date?.to && this.date?.from): return false;
 			}
@@ -133,19 +133,7 @@ export default {
 					const year = date.year();
 
 					const period = prices[el];
-					/*console.group(date)
-					console.log(date.isBetween(
-						//this.$moment(`${period?.date_from}.${year}`),
-						//this.$moment(`${period?.date_to}.${year}`)
-						convertDateFormat(period?.date_from, year),
-						convertDateFormat(period?.date_to, year),
-					))
-					console.log(convertDateFormat(period?.date_from, year))
-					console.log(convertDateFormat(period?.date_to, year))
-					console.groupEnd()*/
 					return date.isBetween(
-						//this.$moment(`${period?.date_from}.${year}`),
-						//this.$moment(`${period?.date_to}.${year}`)
 						convertDateFormat(period?.date_from, year),
 						convertDateFormat(period?.date_to, year),
 					)
@@ -169,20 +157,26 @@ export default {
 			return Math.ceil(total);
 		}
 	},
-	watch: {
-		isFormValid() {
+	methods: {
+		handleFormChange() {
 			this.$emit('change', {
 				adultsAmount: this.adultsAmount,
 				childrenAmount: this.childrenAmount,
 				roomType: this.roomType,
 				date: this.date,
-				price: this.price
+				price: this.price,
+				isFormValid: this.isFormValid
 			})
 		}
 	},
+	watch: {
+		adultsAmount: () => this.handleFormChange(),
+		childrenAmount: () => this.handleFormChange(),
+		roomType: () => this.handleFormChange(),
+		date: () => this.handleFormChange(),
+		price: () => this.handleFormChange(),
+	},
 	mounted() {
-		const a = this.$moment('2020-06-03')
-		console.log(a.isBetween('2020-05-15', '2020-10-25'))
 	}
 }
 </script>

@@ -2,7 +2,7 @@
 	<v-layout wrap class="form xs12 pa-4 justify-center">
 		<v-card class="xs12 pa-2">
 			<TheFirstStep v-if="!isFirstStepActive" v-model="firstStep"/>
-			<TheSecondStep v-else/>
+			<TheSecondStep v-else v-model="secondStep"/>
 
 			<v-row class="justify-center">
 				<v-btn
@@ -25,13 +25,17 @@ export default {
 	name: 'calculate-form',
 	components: {
 		TheFirstStep,
-		TheSecondStep
+		TheSecondStep,
 	},
 	data: function () {
 		return {
 			isFirstStepActive: true,
-			firstStep: null
+			firstStep: null,
+			secondStep: null,
 		}
+	},
+	computed: {
+		isFormValid: () => this.firstStep?.isFormValid && this.secondStep?.isFormValid,
 	}
 }
 </script>

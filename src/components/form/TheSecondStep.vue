@@ -1,13 +1,12 @@
 <template>
 	<div class="xs12">
-		<v-form>
+		<v-form ref="secondStep">
 			<v-container>
 				<v-row>
 					<v-col cols="12" md="4">
 						<v-text-field
 							v-model="firstName"
 							:rules="nameRules"
-							type="text"
 							label="Имя"
 							required
 						></v-text-field>
@@ -17,7 +16,6 @@
 						<v-text-field
 							v-model="lastName"
 							:rules="nameRules"
-							type="text"
 							label="Фамилия"
 							required
 						></v-text-field>
@@ -27,7 +25,6 @@
 						<v-text-field
 							v-model="patronymic"
 							:rules="nameRules"
-							type="text"
 							label="Отчество"
 							required
 						></v-text-field>
@@ -48,12 +45,16 @@
 
 				<v-row>
 					<v-col cols="12" md="12">
-
-						<v-text-field
-							pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$"
-							type="time"
-							label="time">
-						</v-text-field>
+						<!--Во 2-ой версии vuetify масок не нашел-->
+						<vue-tel-input-vuetify
+							v-model="phone"
+							label="Телефон"
+							placeholder="Введите номер"
+							:maxLen="10"
+							:onlyCountries="['ru']"
+							required validCharactersOnly
+						>
+						</vue-tel-input-vuetify>
 					</v-col>
 				</v-row>
 
@@ -64,16 +65,17 @@
 </template>
 
 <script>
-import MaskedInput from 'vue-masked-input'
 export default {
 
 	name: 'form-second-step',
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	components: {
-		MaskedInput
 	},
 	data: function () {
 		return {
-
 			firstName: '',
 			lastName: '',
 			patronymic: '',
@@ -91,9 +93,38 @@ export default {
 		}
 	},
 	methods: {
-		handlePhoneInput() {
-
+		handleFormChange() {
+			this.$emit('change', {
+				firstName: this.firstName,
+				lastName: this.lastName,
+				patronymic: this.patronymic,
+				email: this.email,
+				phone: this.phone,
+				isFormValid: this.isFormValid
+			})
 		}
+	},
+	computed: {
+		isFormValid() {
+			switch (true) {
+				case !this.firstName: return false
+				case !this.lastName: return false
+				case !this.patronymic: return false
+				case !(/.+@.+\..+/.test(this.email)): return false
+				case this.phone.length <10: return false
+			}
+			return true
+		}
+	},
+	watch: {
+		firstName: () => this.handleFormChange,
+		lastName: () => this.handleFormChange,
+		patronymic: () => this.handleFormChange,
+		email: () => this.handleFormChange,
+		phone: () => this.handleFormChange,
+	},
+	mounted() {
+		console.log(this.$refs)
 	}
 }
 </script>

@@ -170,11 +170,11 @@ export default {
 		}
 	},
 	watch: {
-		adultsAmount: () => this.handleFormChange(),
-		childrenAmount: () => this.handleFormChange(),
-		roomType: () => this.handleFormChange(),
-		date: () => this.handleFormChange(),
-		price: () => this.handleFormChange(),
+		adultsAmount() { this.handleFormChange() },
+		childrenAmount() { this.handleFormChange() },
+		roomType() { this.handleFormChange() },
+		date() { this.handleFormChange() },
+		price() { this.handleFormChange() },
 	},
 	mounted() {
 	}

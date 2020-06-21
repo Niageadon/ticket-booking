@@ -89,7 +89,6 @@ export default {
 				v => !!v || 'Заполните email',
 				v => /.+@.+\..+/.test(v) || 'Email не корректен',
 			],
-
 		}
 	},
 	methods: {
@@ -117,11 +116,11 @@ export default {
 		}
 	},
 	watch: {
-		firstName: () => this.handleFormChange,
-		lastName: () => this.handleFormChange,
-		patronymic: () => this.handleFormChange,
-		email: () => this.handleFormChange,
-		phone: () => this.handleFormChange,
+		firstName() { this.handleFormChange() },
+		lastName() { this.handleFormChange() },
+		patronymic() { this.handleFormChange() },
+		email() { this.handleFormChange() },
+		phone() {this.handleFormChange() },
 	},
 	mounted() {
 		console.log(this.$refs)
